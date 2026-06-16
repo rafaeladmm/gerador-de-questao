@@ -157,10 +157,4 @@ Explicações
 ...
 ```
 
----
 
-## 👩‍💻 Autora
-
-Rafaela Martins
-
-Projeto desenvolvido para a disciplina de Fundamentos de Inteligência Artificial do curso de Análise e Desenvolvimento de Sistemas.
