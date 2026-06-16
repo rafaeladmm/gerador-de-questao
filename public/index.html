@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Gerador de Questões ADS</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0f172a;
+  color: #f8fafc;
+  font-family: 'Segoe UI', sans-serif;
+  max-width: 1000px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+.container {
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #38bdf8;
+}
+
+.subtitulo {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #cbd5e1;
+}
+
+textarea {
+  width: 100%;
+  min-height: 150px;
+  resize: vertical;
+  padding: 15px;
+  border: 2px solid #334155;
+  border-radius: 12px;
+  background: #0f172a;
+  color: white;
+  font-size: 16px;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #38bdf8;
+}
+
+button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #38bdf8;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #0ea5e9;
+  transform: translateY(-2px);
+}
+
+h2 {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  color: #38bdf8;
+}
+
+pre {
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 20px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  min-height: 200px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Gerador de Questões para ADS</h1>
+
+<p>
+Digite um tema para gerar questões de revisão.
+</p>
+
+<textarea
+id="prompt"
+placeholder="Exemplo: API REST">
+</textarea>
+
+<br>
+
+<button onclick="enviar()">
+Gerar Questões
+</button>
+
+<h2>Resultado</h2>
+
+<pre id="resultado">
+A resposta aparecerá aqui...
+</pre>
+
+<script>
+
+async function enviar(){
+
+  const prompt =
+    document.getElementById("prompt").value;
+
+  const resultado =
+    document.getElementById("resultado");
+
+  resultado.textContent =
+    "Gerando questões...";
+
+  try{
+
+    const response =
+      await fetch("/api/llm",{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+        prompt
+      })
+
+    });
+
+    const data =
+      await response.json();
+
+    if(!response.ok){
+
+      resultado.textContent =
+        data.erro;
+
+      return;
+    }
+
+    resultado.textContent =
+      data.resposta;
+
+  }catch{
+
+    resultado.textContent =
+      "Erro ao conectar.";
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
